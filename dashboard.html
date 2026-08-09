@@ -1,0 +1,6 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>My Registration | ByteFest</title><link rel="stylesheet" href="style.css"></head><body>
+<header class="navbar"><a class="brand" href="index.html"><span>BYTE</span>FEST <small>2026</small></a><nav><a href="events.html">Events</a><a href="register.html">New Registration</a><a href="#" id="logout">Logout</a></nav></header>
+<main class="section narrow"><p class="eyebrow">PARTICIPANT PORTAL</p><h1>My Registration</h1><div id="card" class="profile-card"></div></main><footer><p>© 2026 ByteFest</p></footer><script>
+const d=JSON.parse(localStorage.getItem("bf_current")||"null");if(!d){location.href="login.html"}else{document.querySelector("#card").innerHTML=`<div class="id-badge">${d.registrationId}</div><h2>${d.teamName}</h2><p><b>Event:</b> ${d.event}</p><p><b>Team Leader:</b> ${d.leaderName}</p><p><b>College:</b> ${d.college}</p><p><b>Department:</b> ${d.department} • ${d.year}</p><p><b>Email:</b> ${d.email}</p><p><b>Phone:</b> ${d.phone}</p><p><b>Member 1:</b> ${d.member1||"—"}</p><p><b>Member 2:</b> ${d.member2||"—"}</p><p><b>Payment:</b> ${d.paymentMethod} • ${d.transactionId||"—"}</p>`}
+document.querySelector("#logout").onclick=()=>{localStorage.removeItem("bf_current");location.href="login.html";}
+</script></body></html>

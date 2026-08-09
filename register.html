@@ -1,0 +1,15 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Register | ByteFest</title><link rel="stylesheet" href="style.css"></head><body>
+<header class="navbar"><a class="brand" href="index.html"><span>BYTE</span>FEST <small>2026</small></a><nav><a href="events.html">Events</a><a href="schedule.html">Schedule</a><a href="rules.html">Rules</a><a href="login.html">Participant Login</a></nav></header>
+<main class="section register-section"><div class="section-heading"><p class="eyebrow">REGISTRATION</p><h1>Join ByteFest</h1><p>Registration is on a separate page. Choose one event and enter your team details.</p></div>
+<form id="regForm" class="registration-form">
+<div class="form-row"><label>Event<select id="event" name="event" required><option value="">Select an event</option><option value="UI Showdown">UI Showdown</option><option value="Code Sprint">Code Sprint</option><option value="Bug Hunt">Bug Hunt</option><option value="Tech Quiz">Tech Quiz</option><option value="Checkmate">Checkmate</option></select></label><label>Team Name<input name="teamName" required placeholder="e.g. Byte Warriors"></label></div>
+<h3>Team Leader</h3><div class="form-row"><label>Full Name<input name="leaderName" required></label><label>College / Institute<input name="college" required></label></div>
+<div class="form-row"><label>Department<input name="department" required></label><label>Year<select name="year" required><option value="">Select</option><option>1st Year</option><option>2nd Year</option><option>3rd Year</option><option>4th Year</option><option>Other</option></select></label></div>
+<div class="form-row"><label>Email<input name="email" type="email" required></label><label>Phone<input name="phone" required></label></div>
+<h3>Team Members</h3><div id="members" class="members"><input name="member1" placeholder="Member 1 full name"><input name="member2" placeholder="Member 2 full name"></div>
+<h3>Payment</h3><div id="feeBox" class="payment-box"><strong>Select an event</strong><span>The correct fee and payment instructions will appear here.</span></div>
+<div class="form-row"><label>Payment Method<select name="paymentMethod" required><option value="">Select</option><option>UPI</option><option>Cash at Event Desk</option></select></label><label>Transaction ID / Reference<input name="transactionId" placeholder="Required for UPI"></label></div>
+<label class="check"><input name="agree" type="checkbox" required> I confirm the information is correct and agree to the event rules.</label>
+<button class="btn primary submit-btn" type="submit">Submit Registration</button></form>
+<div id="success" class="success-box hidden"><p class="eyebrow">REGISTRATION COMPLETE</p><h2>Welcome to ByteFest 🎉</h2><p>Registration ID:</p><strong id="rid"></strong><p>Use your email and registration ID to log in and view your details.</p><a class="btn primary" href="login.html">Participant Login</a></div>
+</main><footer><p>© 2026 ByteFest</p></footer><script src="register.js"></script></body></html>
