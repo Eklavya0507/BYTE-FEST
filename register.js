@@ -1,13 +1,81 @@
-const fee={ "UI Showdown":"₹100 per team","Code Sprint":"₹100 per team","Bug Hunt":"₹100 per team","Tech Quiz":"₹50 per team","Checkmate":"₹50 per team" };
-const sel=document.querySelector("#event"), box=document.querySelector("#feeBox");
-const qs=new URLSearchParams(location.search); const preset=qs.get("event");
-if(preset){ const map={ui:"UI Showdown",code:"Code Sprint",bug:"Bug Hunt",quiz:"Tech Quiz",checkmate:"Checkmate"}; sel.value=map[preset]||preset; updateFee(); }
-function updateFee(){ const v=sel.value; box.innerHTML=v?`<strong>${fee[v]}</strong><span>Official UPI ID/QR should be configured by the organizer before launch. Enter the transaction reference after payment.</span>`:`<strong>Select an event</strong><span>The correct fee and payment instructions will appear here.</span>`; }
-sel.addEventListener("change",updateFee); updateFee();
-document.querySelector("#regForm").addEventListener("submit",e=>{
- e.preventDefault(); const d=Object.fromEntries(new FormData(e.target)); const prefix={"UI Showdown":"UI","Code Sprint":"CS","Bug Hunt":"BH","Tech Quiz":"TQ","Checkmate":"CM"}[d.event];
- const key="bf_"+prefix; const n=Number(localStorage.getItem(key)||0)+1; localStorage.setItem(key,n);
- const id=`BF26-${prefix}-${String(n).padStart(3,"0")}`; d.registrationId=id; d.createdAt=new Date().toISOString();
- const arr=JSON.parse(localStorage.getItem("bytefest_registrations")||"[]"); arr.push(d); localStorage.setItem("bytefest_registrations",JSON.stringify(arr));
- document.querySelector("#rid").textContent=id; e.target.classList.add("hidden"); document.querySelector("#success").classList.remove("hidden");
+const API_URL = "https://byte-fest-backend.onrender.com/api/registrations";
+
+const form = document.getElementById("regForm");
+const eventSelect = document.getElementById("event");
+const successBox = document.getElementById("success");
+const registrationId = document.getElementById("rid");
+
+form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const data = Object.fromEntries(new FormData(form));
+
+    // Don't send the agreement checkbox as participant data
+    delete data.agree;
+
+    const submitButton = form.querySelector("button[type='submit']");
+    submitButton.disabled = true;
+    submitButton.textContent = "Submitting...";
+
+    const participant = {
+        name: data.leaderName,
+        email: data.email,
+        phone: data.phone,
+        department: data.department,
+        year: data.year
+    };
+
+    // Convert the existing frontend member fields
+    const members = [];
+
+    if (data.member1) {
+        members.push({
+            name: data.member1
+        });
+    }
+
+    if (data.member2) {
+        members.push({
+            name: data.member2
+        });
+    }
+
+    try {
+        const response = await fetch(API_URL, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                event: data.event,
+                participant,
+                members
+            })
+        });
+
+        const result = await response.json();
+
+        if (!response.ok) {
+            throw new Error(result.message || "Registration failed");
+        }
+
+        registrationId.textContent = result.registrationId;
+
+        form.classList.add("hidden");
+        successBox.classList.remove("hidden");
+
+        console.log("Registration successful:", result);
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert(
+            "Registration failed.\n\n" +
+            error.message
+        );
+
+        submitButton.disabled = false;
+        submitButton.textContent = "Submit Registration";
+    }
 });
